@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Jobs() {
 
     const [job, setJob] = useState([]);
+    const [credential, setCredential] = useState({ searchtitle: '',  searchplace: '',searchjobtype:'',searchsalary:'' });
     const [loader, setLoader] = useState(true);
     // let host = 'https://api.zmyn.repl.co/jobs';
     let host = 'http://localhost:4000';
@@ -23,6 +24,17 @@ export default function Jobs() {
         fecthJobData();
     }, [])
 
+    const onChange = (e) => {
+        setCredential({ ...credential, [e.target.name]: e.target.value })
+    }
+    const filerNow = () => {
+        // const filtertitle = job.filter((res)=> res.jobTitle === credential.searchtitle);
+        // const filtertitle = job.filter((res)=> res.jobTitle > 4);
+        const filtertitle = job.filter((res)=> res.jobTitle.includes(credential.searchtitle));
+        setJob(filtertitle);
+        console.log(credential);
+    }
+
     return (
         <>
 
@@ -36,19 +48,19 @@ export default function Jobs() {
                         <div className='d-flex'>
 
                             <div style={{ width: '100%', paddingRight: "8px" }}>
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='Profile' />
+                                <input type="text" class="form-control" id="searchtitle" value={credential.searchtitle} onChange={onChange} name="searchtitle"  placeholder='Profile' />
                             </div>
                             <div style={{ width: '100%' }}>
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='Place' />
+                                <input type="text" class="form-control" id="searchplace" value={credential.searchplace} onChange={onChange} name="searchplace"  placeholder='Place' />
                             </div>
                             <div class="px-2" style={{ width: '100%' }}>
-                                <select class="form-select px-2" aria-label="Default select example">
+                                <select class="form-select px-2" aria-label="Default select example"  id="searchjobtype" value={credential.searchjobtype} onChange={onChange} name="searchjobtype" >
                                     <option selected>Job Type</option>
                                     <option value="remote">Remote</option>
                                     <option value="onsite">Onsite</option>
                                 </select>
                             </div>
-                            <select class="form-select" aria-label="Default select example">
+                            <select class="form-select" aria-label="Default select example"  id="searchsalary" value={credential.searchsalary} onChange={onChange} name='searchsalary'>
                                 <option selected>Salary</option>
 
                                 <option value="5,000-10,000">5,000-10,000</option>
@@ -69,7 +81,7 @@ export default function Jobs() {
                                 <label class="form-check-label" for="exampleCheck1">Job</label>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-outline-primary">SEARCH</button>
+                        <button type="submit" onClick={filerNow} class="btn btn-outline-primary">SEARCH</button>
                     </div>
                 </div>
 
